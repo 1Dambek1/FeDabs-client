@@ -6,8 +6,10 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 export const Route = createRootRoute({
   component: () => (
     <>
-      <Layout/>
+    <Layout/>
 
+
+    
       <Outlet />
       {/* <TanStackRouterDevtools /> */}
     </>
