@@ -1,5 +1,6 @@
 import Cookies from "js-cookie"
-import { type User } from "@/types/user"
+import { Role, type User } from "@/types/user"
+import { sleep } from "@/lib/utils"
 import { api } from "./api"
 import { type LoginSchema } from "@/lib/schemas"
 
@@ -21,9 +22,20 @@ export const logout = () => {
   removeFromStorage()
 }
 
-export const fetchCurrentUser = async () => {
-  const response = await api.get<User>("/auth/me")
-  return response.data
+export const fetchCurrentUser = async (): Promise<User> => {
+  await sleep(500)
+
+  return {
+    id: 1,
+    name: "John",
+    surname: "Doe",
+    email: "john@doe.com",
+    role: Role.Student,
+    dob: new Date()
+  }
+
+  // const response = await api.get<User>("/auth/me")
+  // return response.data
 }
 
 export const getToken = () => Cookies.get(TOKEN_NAME)
