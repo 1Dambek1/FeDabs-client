@@ -1,4 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
+import { AxiosError } from "axios"
+import { ApiResponseError } from "@/types/error"
+import { title } from "@/lib/utils"
 import { toast } from "./use-toast"
 import { login } from "@/api/auth"
 
@@ -12,10 +15,13 @@ export function useLogin() {
         description: `Welcome back, ${user.name}!`
       })
     },
-    onError: error => {
+    onError: (error: AxiosError<ApiResponseError>) => {
+      console.log(error)
       toast({
         title: "Login Failed",
-        description: error.message
+        description: error?.response
+          ? title(error.response.data.detail.data) + "."
+          : "An error occured trying to login"
       })
     }
   })
