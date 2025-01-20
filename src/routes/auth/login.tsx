@@ -1,36 +1,49 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { createFileRoute } from '@tanstack/react-router'
-import { Loader2 } from 'lucide-react'
-import { motion } from 'motion/react'
-import { useForm } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { createFileRoute, redirect } from "@tanstack/react-router"
+import { AxiosError } from "axios"
+import { Loader2 } from "lucide-react"
+import { motion } from "motion/react"
+import { useForm } from "react-hook-form"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+  CardTitle
+} from "@/components/ui/card"
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useLogin } from '@/hooks/use-login'
-import { type LoginSchema, loginSchema } from '@/lib/schemas'
+  FormMessage
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useLogin } from "@/hooks/use-login"
+import { fetchCurrentUser } from "@/api/auth"
+import { type LoginSchema, loginSchema } from "@/lib/schemas"
 
-export const Route = createFileRoute('/auth/login')({
+export const Route = createFileRoute("/auth/login")({
   component: LoginForm,
+  beforeLoad: async () => {
+    try {
+      const user = await fetchCurrentUser()
+
+      if (user) return redirect({ to: "/profile" })
+    } catch (error) {
+      if (error instanceof AxiosError && error.code === "401") {
+        return
+      }
+    }
+  }
 })
 
 export default function LoginForm() {
   const form = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(loginSchema)
   })
 
   const { mutate: login, isPending } = useLogin()
@@ -100,7 +113,7 @@ export default function LoginForm() {
                         Logging in...
                       </>
                     ) : (
-                      'Log in'
+                      "Log in"
                     )}
                   </Button>
                 </motion.div>
