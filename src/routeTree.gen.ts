@@ -12,7 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
-import { Route as LoginRegisterImport } from './routes/login/Register'
+import { Route as LoginRegisterImport } from './routes/login/register'
 
 // Create/Update Routes
 
@@ -23,8 +23,8 @@ const IndexRoute = IndexImport.update({
 } as any)
 
 const LoginRegisterRoute = LoginRegisterImport.update({
-  id: '/login/Register',
-  path: '/login/Register',
+  id: '/login/register',
+  path: '/login/register',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,10 +39,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/login/Register': {
-      id: '/login/Register'
-      path: '/login/Register'
-      fullPath: '/login/Register'
+    '/login/register': {
+      id: '/login/register'
+      path: '/login/register'
+      fullPath: '/login/register'
       preLoaderRoute: typeof LoginRegisterImport
       parentRoute: typeof rootRoute
     }
@@ -53,26 +53,26 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/login/Register': typeof LoginRegisterRoute
+  '/login/register': typeof LoginRegisterRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/login/Register': typeof LoginRegisterRoute
+  '/login/register': typeof LoginRegisterRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/login/Register': typeof LoginRegisterRoute
+  '/login/register': typeof LoginRegisterRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login/Register'
+  fullPaths: '/' | '/login/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login/Register'
-  id: '__root__' | '/' | '/login/Register'
+  to: '/' | '/login/register'
+  id: '__root__' | '/' | '/login/register'
   fileRoutesById: FileRoutesById
 }
 
@@ -97,14 +97,14 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/login/Register"
+        "/login/register"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/login/Register": {
-      "filePath": "login/Register.tsx"
+    "/login/register": {
+      "filePath": "login/register.tsx"
     }
   }
 }
