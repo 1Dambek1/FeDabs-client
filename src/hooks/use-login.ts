@@ -13,7 +13,7 @@ export function useLogin() {
     mutationKey: ["login"],
     mutationFn: login,
     onSuccess: user => {
-      router.navigate("/profile")
+      router.navigate({ to: "/profile" })
 
       toast({
         title: "Login Successful",

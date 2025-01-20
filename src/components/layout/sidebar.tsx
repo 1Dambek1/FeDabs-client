@@ -75,7 +75,7 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild>
                       <Link to="/admin">
                         <Cog />
-                        <span>Admin</span>
+                        <span>Панель управления</span>
                       </Link>
                     </SidebarMenuButton>
                   </motion.div>
