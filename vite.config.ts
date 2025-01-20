@@ -1,8 +1,8 @@
-<<<<<<< HEAD
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
-import path from "path";
+import react from '@vitejs/plugin-react-swc'
+import path from "path"
+import { defineConfig } from 'vite'
+
 export default defineConfig({
   plugins: [react(), TanStackRouterVite()],
   resolve: {
@@ -10,16 +10,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
-})
-=======
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
-import react from "@vitejs/plugin-react-swc";
-import { defineConfig } from "vite";
-// https://vite.dev/config/
-export default defineConfig({
-	plugins: [react(), TanStackRouterVite()],
-	server: {
+  server: {
 		port: 3000,
 	},
-});
->>>>>>> 8221eecc3c066bd816fb19a85ab3304e5dafdc38
+})
