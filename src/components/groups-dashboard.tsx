@@ -13,6 +13,7 @@ import {
   TableRow
 } from "@/components/ui/table"
 import type { Department, Group } from "@/types/user"
+import { AdminNavList } from "./admin-nav-list"
 import { CreateGroupDialog } from "./create-group-dialog"
 import { GroupStudentsDialog } from "./group-students-dialog"
 
@@ -29,19 +30,19 @@ export function GroupsDashboard({ groups, departments }: GroupsDashboardProps) {
   )
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Панель управления группами</h1>
+    <div className="container mx-auto p-4 space-y-6">
+      <h1 className="text-2xl font-bold">Панель управления группами</h1>
 
-      <Card className="mb-4">
+      <Card>
         <CardHeader>
           <CardTitle>Создать новую группу</CardTitle>
         </CardHeader>
         <CardContent>
-          <CreateGroupDialog groups={groups} departments={departments} />
+          <CreateGroupDialog departments={departments} />
         </CardContent>
       </Card>
 
-      <Card className="mb-4">
+      <Card>
         <CardHeader>
           <CardTitle>Искать группы</CardTitle>
         </CardHeader>
@@ -116,6 +117,8 @@ export function GroupsDashboard({ groups, departments }: GroupsDashboardProps) {
           </Table>
         </CardContent>
       </Card>
+
+      <AdminNavList className="gap-5" />
     </div>
   )
 }

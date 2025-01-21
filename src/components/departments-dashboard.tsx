@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table"
 import { useDeleteDepartment } from "@/hooks/use-delete-department"
 import type { Department } from "@/types/user"
+import { AdminNavList } from "./admin-nav-list"
 import { CreateDepartmentDialog } from "./create-department-dialog"
 import { DepartmentGroupsDialog } from "./department-groups-dialog"
 import { DepartmentTeachersDialog } from "./department-teachers-dialog"
@@ -34,10 +35,10 @@ export function DepartmentsDashboard({
   )
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Панель управления кафедрами</h1>
+    <div className="container mx-auto p-4 space-y-6">
+      <h1 className="text-2xl font-bold">Панель управления кафедрами</h1>
 
-      <Card className="mb-4">
+      <Card>
         <CardHeader>
           <CardTitle>Создать новую кафедру</CardTitle>
         </CardHeader>
@@ -46,7 +47,7 @@ export function DepartmentsDashboard({
         </CardContent>
       </Card>
 
-      <Card className="mb-4">
+      <Card>
         <CardHeader>
           <CardTitle>Искать кафедры</CardTitle>
         </CardHeader>
@@ -128,6 +129,8 @@ export function DepartmentsDashboard({
           </Table>
         </CardContent>
       </Card>
+
+      <AdminNavList className="gap-5" />
     </div>
   )
 }
