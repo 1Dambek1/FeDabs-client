@@ -15,7 +15,7 @@ export const Route = createFileRoute("/admin/departments/$departmentId")({
 })
 
 function RouteComponent() {
-  const department = Route.useLoaderData()
+  const _department = Route.useLoaderData()
 
   return <div></div>
 }

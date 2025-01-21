@@ -15,6 +15,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as ProfileIndexImport } from './routes/profile/index'
 import { Route as AdminIndexImport } from './routes/admin/index'
 import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as AdminDepartmentsIndexImport } from './routes/admin/departments/index'
 import { Route as AdminDepartmentsDepartmentIdImport } from './routes/admin/departments/$departmentId'
 
 // Create/Update Routes
@@ -40,6 +41,12 @@ const AdminIndexRoute = AdminIndexImport.update({
 const AuthLoginRoute = AuthLoginImport.update({
   id: '/auth/login',
   path: '/auth/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminDepartmentsIndexRoute = AdminDepartmentsIndexImport.update({
+  id: '/admin/departments/',
+  path: '/admin/departments/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -89,6 +96,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDepartmentsDepartmentIdImport
       parentRoute: typeof rootRoute
     }
+    '/admin/departments/': {
+      id: '/admin/departments/'
+      path: '/admin/departments'
+      fullPath: '/admin/departments'
+      preLoaderRoute: typeof AdminDepartmentsIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -100,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminIndexRoute
   '/profile': typeof ProfileIndexRoute
   '/admin/departments/$departmentId': typeof AdminDepartmentsDepartmentIdRoute
+  '/admin/departments': typeof AdminDepartmentsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -108,6 +123,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/profile': typeof ProfileIndexRoute
   '/admin/departments/$departmentId': typeof AdminDepartmentsDepartmentIdRoute
+  '/admin/departments': typeof AdminDepartmentsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -117,6 +133,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/profile/': typeof ProfileIndexRoute
   '/admin/departments/$departmentId': typeof AdminDepartmentsDepartmentIdRoute
+  '/admin/departments/': typeof AdminDepartmentsIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -127,6 +144,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/profile'
     | '/admin/departments/$departmentId'
+    | '/admin/departments'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -134,6 +152,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/profile'
     | '/admin/departments/$departmentId'
+    | '/admin/departments'
   id:
     | '__root__'
     | '/'
@@ -141,6 +160,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/profile/'
     | '/admin/departments/$departmentId'
+    | '/admin/departments/'
   fileRoutesById: FileRoutesById
 }
 
@@ -150,6 +170,7 @@ export interface RootRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
   AdminDepartmentsDepartmentIdRoute: typeof AdminDepartmentsDepartmentIdRoute
+  AdminDepartmentsIndexRoute: typeof AdminDepartmentsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -158,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
   AdminDepartmentsDepartmentIdRoute: AdminDepartmentsDepartmentIdRoute,
+  AdminDepartmentsIndexRoute: AdminDepartmentsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -174,7 +196,8 @@ export const routeTree = rootRoute
         "/auth/login",
         "/admin/",
         "/profile/",
-        "/admin/departments/$departmentId"
+        "/admin/departments/$departmentId",
+        "/admin/departments/"
       ]
     },
     "/": {
@@ -191,6 +214,9 @@ export const routeTree = rootRoute
     },
     "/admin/departments/$departmentId": {
       "filePath": "admin/departments/$departmentId.tsx"
+    },
+    "/admin/departments/": {
+      "filePath": "admin/departments/index.tsx"
     }
   }
 }

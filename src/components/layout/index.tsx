@@ -13,10 +13,8 @@ export function Layout({ children }: React.PropsWithChildren) {
       <ThemeProvider storageKey="vite-ui-theme">
         <SidebarProvider>
           <AppSidebar />
-          <main className="relative w-full">
-            <SidebarTrigger className="p-4 sticky top-0 left-0 z-10 translate-x-0 m-2" />
-            {children}
-          </main>
+          <SidebarTrigger className="p-4 sticky top-0 left-0 z-10 translate-x-0 m-2" />
+          <main className="relative w-full p-4">{children}</main>
         </SidebarProvider>
         <Toaster />
       </ThemeProvider>
