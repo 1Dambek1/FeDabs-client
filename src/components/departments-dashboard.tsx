@@ -1,12 +1,10 @@
-import { Link } from "@tanstack/react-router"
-import { ExternalLink } from "lucide-react"
+import { Link, useRouter } from "@tanstack/react-router"
+import { ExternalLink, Trash } from "lucide-react"
 import { useState } from "react"
-import { useCreateDepartment } from "@/hooks/use-create-department"
+import { useDeleteDepartment } from "@/hooks/use-delete-department"
+import { toast } from "@/hooks/use-toast"
 import type { Department } from "@/types/user"
-import {
-  CreateDepartmentDialog,
-  CreateDepartmentDialogProps
-} from "./create-department-dialog"
+import { CreateDepartmentDialog } from "./create-department-dialog"
 import { Button } from "./ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Input } from "./ui/input"
@@ -26,17 +24,13 @@ type DepartmentsDashboardProps = {
 export function DepartmentsDashboard({
   departments
 }: DepartmentsDashboardProps) {
-  const { mutate: createDepartment } = useCreateDepartment()
+  const router = useRouter()
+  const { mutate: deleteDepartment } = useDeleteDepartment()
   const [searchTerm, setSearchTerm] = useState("")
 
   const filteredDepartments = departments.filter(dept =>
     dept.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
-
-  const handleCreateDepartment: CreateDepartmentDialogProps["onCreateDepartment"] =
-    (title, headId) => {
-      createDepartment({ title, head_id: headId })
-    }
 
   return (
     <div className="container mx-auto p-4">
@@ -47,10 +41,7 @@ export function DepartmentsDashboard({
           <CardTitle>Создать новую кафедру</CardTitle>
         </CardHeader>
         <CardContent>
-          <CreateDepartmentDialog
-            departments={departments}
-            onCreateDepartment={handleCreateDepartment}
-          />
+          <CreateDepartmentDialog departments={departments} />
         </CardContent>
       </Card>
 
@@ -81,34 +72,60 @@ export function DepartmentsDashboard({
                 <TableHead>Заведующий</TableHead>
                 <TableHead>Учителя</TableHead>
                 <TableHead>Группы</TableHead>
+                <TableHead className="text-right">Действия</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredDepartments.map(dept => (
-                <TableRow key={dept.id}>
-                  <TableCell>{dept.id}</TableCell>
-                  <TableCell>{dept.title}</TableCell>
-                  <TableCell>{`${dept.head.name} ${dept.head.surname}`}</TableCell>
-                  <TableCell>
-                    {dept.teachers
-                      .map(t => `${t.name} ${t.surname}`)
-                      .join(", ")}
-                  </TableCell>
-                  <TableCell>{dept.groups.length}</TableCell>
-                  <TableCell className="flex justify-end">
-                    <Button size="icon" variant="ghost" asChild>
-                      <Link
-                        to={`/admin/departments/$departmentId`}
-                        params={{
-                          departmentId: dept.id.toString()
+              {filteredDepartments.length ? (
+                filteredDepartments.map(dept => (
+                  <TableRow key={dept.id}>
+                    <TableCell>{dept.id}</TableCell>
+                    <TableCell>{dept.title}</TableCell>
+                    <TableCell>{`${dept.head.name} ${dept.head.surname}`}</TableCell>
+                    <TableCell>
+                      {dept.teachers
+                        .map(t => `${t.name} ${t.surname}`)
+                        .join(", ")}
+                    </TableCell>
+                    <TableCell>{dept.groups.length}</TableCell>
+                    <TableCell className="flex justify-end gap-2">
+                      <Button size="icon" variant="ghost" asChild>
+                        <Link
+                          to={`/admin/departments/$departmentId`}
+                          params={{
+                            departmentId: dept.id.toString()
+                          }}
+                          preload="intent"
+                        >
+                          <ExternalLink />
+                        </Link>
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          deleteDepartment(dept.id)
+                          router.navigate({ to: "/admin/departments" })
+                          toast({
+                            title: "Кафедра удалена успешно!"
+                          })
                         }}
+                        size="icon"
+                        variant="ghost"
+                        className="hover:bg-destructive hover:text-destructive-foreground"
                       >
-                        <ExternalLink />
-                      </Link>
-                    </Button>
+                        <Trash />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6}>
+                    <p className="text-center py-14">
+                      Нет кафедр для отображения
+                    </p>
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </CardContent>

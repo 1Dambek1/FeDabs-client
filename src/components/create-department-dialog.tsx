@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
@@ -19,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
+import { useCreateDepartment } from "@/hooks/use-create-department"
 import { useUsers } from "@/hooks/use-users"
 import { type Department, Role, type UserHeadDepartment } from "@/types/user"
 import {
@@ -34,14 +36,15 @@ import { createDepartmentSchema, CreateDepartmentSchema } from "@/lib/schemas"
 
 export type CreateDepartmentDialogProps = {
   departments: Department[]
-  onCreateDepartment: (title: string, headId: number) => void
 }
 
 export function CreateDepartmentDialog({
-  departments,
-  onCreateDepartment
+  departments
 }: CreateDepartmentDialogProps) {
+  const router = useRouter()
   const { data, isLoading } = useUsers({ role: Role.HeadDepartment })
+  const { mutate: createDepartment } = useCreateDepartment()
+
   const form = useForm<CreateDepartmentSchema>({
     resolver: zodResolver(createDepartmentSchema)
   })
@@ -53,7 +56,9 @@ export function CreateDepartmentDialog({
   const [open, setOpen] = useState(false)
 
   const handleCreate = (data: CreateDepartmentSchema) => {
-    onCreateDepartment(data.title, data.headId)
+    router.navigate({ to: "/admin/departments" })
+
+    createDepartment({ title: data.title, head_id: data.headId })
     setOpen(false)
   }
 

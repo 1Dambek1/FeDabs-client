@@ -11,6 +11,7 @@ export const Route = createFileRoute("/admin/departments/$departmentId")({
 
     return getDepartment(departmentId)
   },
+  staleTime: 60_000,
   component: RouteComponent
 })
 

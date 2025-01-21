@@ -21,3 +21,11 @@ export async function createDepartment(data: {
 
   return response.data
 }
+
+export async function deleteDepartment(id: number) {
+  const response = await api.delete<Department>(
+    `/admin/departments/delete/department/${id}`
+  )
+
+  return response.data
+}
