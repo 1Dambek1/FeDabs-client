@@ -48,3 +48,14 @@ export const saveTokenStorage = (token: string) => {
 }
 
 export const removeFromStorage = () => Cookies.remove(TOKEN_NAME)
+
+
+export const UpdateCurrentUser = async (data:{
+  name: string,
+  surname:string,
+  email: string,
+  dob: Date,
+}) => {
+  const response = await api.put("/auth/update/me", data)
+  return response.data
+}
