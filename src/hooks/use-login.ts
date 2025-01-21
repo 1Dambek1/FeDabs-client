@@ -11,6 +11,12 @@ export function useLogin() {
         title: "Login Successful",
         description: `Welcome back, ${user.name}!`
       })
+    },
+    onError: error => {
+      toast({
+        title: "Login Failed",
+        description: error.message
+      })
     }
   })
 }
