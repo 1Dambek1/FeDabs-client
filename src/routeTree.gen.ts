@@ -19,6 +19,7 @@ import { Route as AdminTeachersIndexImport } from './routes/admin/teachers/index
 import { Route as AdminStudentsIndexImport } from './routes/admin/students/index'
 import { Route as AdminGroupsIndexImport } from './routes/admin/groups/index'
 import { Route as AdminDepartmentsIndexImport } from './routes/admin/departments/index'
+import { Route as AdminGroupsGroupIdImport } from './routes/admin/groups/$groupId'
 import { Route as AdminDepartmentsDepartmentIdImport } from './routes/admin/departments/$departmentId'
 
 // Create/Update Routes
@@ -71,6 +72,12 @@ const AdminDepartmentsIndexRoute = AdminDepartmentsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AdminGroupsGroupIdRoute = AdminGroupsGroupIdImport.update({
+  id: '/admin/groups/$groupId',
+  path: '/admin/groups/$groupId',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AdminDepartmentsDepartmentIdRoute =
   AdminDepartmentsDepartmentIdImport.update({
     id: '/admin/departments/$departmentId',
@@ -117,6 +124,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDepartmentsDepartmentIdImport
       parentRoute: typeof rootRoute
     }
+    '/admin/groups/$groupId': {
+      id: '/admin/groups/$groupId'
+      path: '/admin/groups/$groupId'
+      fullPath: '/admin/groups/$groupId'
+      preLoaderRoute: typeof AdminGroupsGroupIdImport
+      parentRoute: typeof rootRoute
+    }
     '/admin/departments/': {
       id: '/admin/departments/'
       path: '/admin/departments'
@@ -156,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminIndexRoute
   '/profile': typeof ProfileIndexRoute
   '/admin/departments/$departmentId': typeof AdminDepartmentsDepartmentIdRoute
+  '/admin/groups/$groupId': typeof AdminGroupsGroupIdRoute
   '/admin/departments': typeof AdminDepartmentsIndexRoute
   '/admin/groups': typeof AdminGroupsIndexRoute
   '/admin/students': typeof AdminStudentsIndexRoute
@@ -168,6 +183,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/profile': typeof ProfileIndexRoute
   '/admin/departments/$departmentId': typeof AdminDepartmentsDepartmentIdRoute
+  '/admin/groups/$groupId': typeof AdminGroupsGroupIdRoute
   '/admin/departments': typeof AdminDepartmentsIndexRoute
   '/admin/groups': typeof AdminGroupsIndexRoute
   '/admin/students': typeof AdminStudentsIndexRoute
@@ -181,6 +197,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/profile/': typeof ProfileIndexRoute
   '/admin/departments/$departmentId': typeof AdminDepartmentsDepartmentIdRoute
+  '/admin/groups/$groupId': typeof AdminGroupsGroupIdRoute
   '/admin/departments/': typeof AdminDepartmentsIndexRoute
   '/admin/groups/': typeof AdminGroupsIndexRoute
   '/admin/students/': typeof AdminStudentsIndexRoute
@@ -195,6 +212,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/profile'
     | '/admin/departments/$departmentId'
+    | '/admin/groups/$groupId'
     | '/admin/departments'
     | '/admin/groups'
     | '/admin/students'
@@ -206,6 +224,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/profile'
     | '/admin/departments/$departmentId'
+    | '/admin/groups/$groupId'
     | '/admin/departments'
     | '/admin/groups'
     | '/admin/students'
@@ -217,6 +236,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/profile/'
     | '/admin/departments/$departmentId'
+    | '/admin/groups/$groupId'
     | '/admin/departments/'
     | '/admin/groups/'
     | '/admin/students/'
@@ -230,6 +250,7 @@ export interface RootRouteChildren {
   AdminIndexRoute: typeof AdminIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
   AdminDepartmentsDepartmentIdRoute: typeof AdminDepartmentsDepartmentIdRoute
+  AdminGroupsGroupIdRoute: typeof AdminGroupsGroupIdRoute
   AdminDepartmentsIndexRoute: typeof AdminDepartmentsIndexRoute
   AdminGroupsIndexRoute: typeof AdminGroupsIndexRoute
   AdminStudentsIndexRoute: typeof AdminStudentsIndexRoute
@@ -242,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
   AdminDepartmentsDepartmentIdRoute: AdminDepartmentsDepartmentIdRoute,
+  AdminGroupsGroupIdRoute: AdminGroupsGroupIdRoute,
   AdminDepartmentsIndexRoute: AdminDepartmentsIndexRoute,
   AdminGroupsIndexRoute: AdminGroupsIndexRoute,
   AdminStudentsIndexRoute: AdminStudentsIndexRoute,
@@ -263,6 +285,7 @@ export const routeTree = rootRoute
         "/admin/",
         "/profile/",
         "/admin/departments/$departmentId",
+        "/admin/groups/$groupId",
         "/admin/departments/",
         "/admin/groups/",
         "/admin/students/",
@@ -283,6 +306,9 @@ export const routeTree = rootRoute
     },
     "/admin/departments/$departmentId": {
       "filePath": "admin/departments/$departmentId.tsx"
+    },
+    "/admin/groups/$groupId": {
+      "filePath": "admin/groups/$groupId.tsx"
     },
     "/admin/departments/": {
       "filePath": "admin/departments/index.tsx"

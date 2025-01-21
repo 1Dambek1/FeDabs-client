@@ -12,48 +12,42 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table"
-import { useDeleteDepartment } from "@/hooks/use-delete-department"
-import type { Department } from "@/types/user"
-import { CreateDepartmentDialog } from "./create-department-dialog"
-import { DepartmentGroupsDialog } from "./department-groups-dialog"
-import { DepartmentTeachersDialog } from "./department-teachers-dialog"
+import type { Department, Group } from "@/types/user"
+import { CreateGroupDialog } from "./create-group-dialog"
 
-type DepartmentsDashboardProps = {
+export type GroupsDashboardProps = {
+  groups: Group[]
   departments: Department[]
 }
 
-export function DepartmentsDashboard({
-  departments
-}: DepartmentsDashboardProps) {
-  const { mutate: deleteDepartment } = useDeleteDepartment()
-
+export function GroupsDashboard({ groups, departments }: GroupsDashboardProps) {
   const [searchTerm, setSearchTerm] = useState("")
 
-  const filteredDepartments = departments.filter(dept =>
-    dept.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredGroups = groups.filter(group =>
+    group.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Панель управления кафедрами</h1>
+      <h1 className="text-2xl font-bold mb-4">Панель управления группами</h1>
 
       <Card className="mb-4">
         <CardHeader>
-          <CardTitle>Создать новую кафедру</CardTitle>
+          <CardTitle>Создать новую группу</CardTitle>
         </CardHeader>
         <CardContent>
-          <CreateDepartmentDialog departments={departments} />
+          <CreateGroupDialog groups={groups} departments={departments} />
         </CardContent>
       </Card>
 
       <Card className="mb-4">
         <CardHeader>
-          <CardTitle>Искать кафедры</CardTitle>
+          <CardTitle>Искать группы</CardTitle>
         </CardHeader>
         <CardContent>
           <Input
             type="text"
-            placeholder="Искать кафедры..."
+            placeholder="Искать группы..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
@@ -62,7 +56,7 @@ export function DepartmentsDashboard({
 
       <Card>
         <CardHeader>
-          <CardTitle>Все кафедры</CardTitle>
+          <CardTitle>Все группы</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -70,31 +64,25 @@ export function DepartmentsDashboard({
               <TableRow>
                 <TableHead className="w-16">ID</TableHead>
                 <TableHead className="w-80">Название</TableHead>
-                <TableHead className="w-64">Заведующий</TableHead>
-                <TableHead className="w-40 text-center">Учителя</TableHead>
-                <TableHead className="w-40 text-center">Группы</TableHead>
+                <TableHead className="w-40 text-center">Ученики</TableHead>
                 <TableHead className="text-right">Действия</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredDepartments.length ? (
-                filteredDepartments.map(dept => (
-                  <TableRow key={dept.id}>
-                    <TableCell>{dept.id}</TableCell>
-                    <TableCell>{dept.title}</TableCell>
-                    <TableCell>{`${dept.head.name} ${dept.head.surname}`}</TableCell>
+              {filteredGroups.length ? (
+                filteredGroups.map(group => (
+                  <TableRow key={group.id}>
+                    <TableCell>{group.id}</TableCell>
+                    <TableCell>{group.title}</TableCell>
                     <TableCell>
-                      <DepartmentTeachersDialog department={dept} />
-                    </TableCell>
-                    <TableCell>
-                      <DepartmentGroupsDialog department={dept} />
+                      {/* <GroupStudentsDialog group={group} /> */}
                     </TableCell>
                     <TableCell className="flex justify-end gap-2">
                       <Button size="icon" variant="ghost" asChild>
                         <Link
-                          to={`/admin/departments/$departmentId`}
+                          to={`/admin/groups/$groupId`}
                           params={{
-                            departmentId: dept.id.toString()
+                            groupId: group.id.toString()
                           }}
                           preload="intent"
                         >
@@ -102,7 +90,7 @@ export function DepartmentsDashboard({
                         </Link>
                       </Button>
                       <Button
-                        onClick={() => deleteDepartment(dept.id)}
+                        // onClick={() => deleteGroup(group.id)}
                         size="icon"
                         variant="ghost"
                         className="hover:bg-destructive hover:text-destructive-foreground"
@@ -116,7 +104,7 @@ export function DepartmentsDashboard({
                 <TableRow>
                   <TableCell colSpan={6}>
                     <p className="text-center py-14">
-                      Нет кафедр для отображения
+                      Нет групп для отображения
                     </p>
                   </TableCell>
                 </TableRow>
