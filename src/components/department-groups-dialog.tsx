@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogTitle
 } from "@/components/ui/dialog"
-import { useDeleteGroupFromDepartment } from "@/hooks/use-delete-group-from-department"
+import { useDeleteGroup } from "@/hooks/use-delete-group"
 import { Department } from "@/types/user"
 import { cn } from "@/lib/utils"
 
@@ -15,10 +15,10 @@ type DepartmentGroupsDialogProps = {
   department: Department
 }
 
-export const DepartmentGroupssDialog: React.FC<DepartmentGroupsDialogProps> = ({
+export const DepartmentGroupsDialog: React.FC<DepartmentGroupsDialogProps> = ({
   department: dept
 }) => {
-  const { mutate: deleteGroupFromDepartment } = useDeleteGroupFromDepartment()
+  const { mutate: deleteGroup } = useDeleteGroup()
 
   return (
     <Dialog>
@@ -42,12 +42,7 @@ export const DepartmentGroupssDialog: React.FC<DepartmentGroupsDialogProps> = ({
               >
                 <p>{group.title}</p>
                 <Button
-                  onClick={() =>
-                    deleteGroupFromDepartment({
-                      departmentId: dept.id,
-                      groupId: group.id
-                    })
-                  }
+                  onClick={() => deleteGroup(group.id)}
                   size="icon"
                   variant="ghost"
                   className="hover:bg-destructive hover:text-destructive-foreground"
@@ -58,7 +53,7 @@ export const DepartmentGroupssDialog: React.FC<DepartmentGroupsDialogProps> = ({
             ))
           ) : (
             <li>
-              <p>Учителей нет на данной кафедре</p>
+              <p>Групп нет на данной кафедре</p>
             </li>
           )}
         </ul>

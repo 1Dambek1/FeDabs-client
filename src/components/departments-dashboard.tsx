@@ -16,6 +16,7 @@ import {
 import { useDeleteDepartment } from "@/hooks/use-delete-department"
 import type { Department } from "@/types/user"
 import { CreateDepartmentDialog } from "./create-department-dialog"
+import { DepartmentGroupsDialog } from "./department-groups-dialog"
 import { DepartmentTeachersDialog } from "./department-teachers-dialog"
 
 type DepartmentsDashboardProps = {
@@ -87,18 +88,7 @@ export function DepartmentsDashboard({
                       <DepartmentTeachersDialog department={dept} />
                     </TableCell>
                     <TableCell>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            className="w-full"
-                            size="sm"
-                            variant="secondary"
-                          >
-                            Посмотреть
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent></DialogContent>
-                      </Dialog>
+                      <DepartmentGroupsDialog department={dept} />
                     </TableCell>
                     <TableCell className="flex justify-end gap-2">
                       <Button size="icon" variant="ghost" asChild>
