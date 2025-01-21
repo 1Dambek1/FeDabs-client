@@ -12,8 +12,8 @@ export function Layout({ children }: React.PropsWithChildren) {
       <ThemeProvider>
         <SidebarProvider>
           <AppSidebar />
-          <main>
-            <SidebarTrigger />
+          <main className="relative">
+            <SidebarTrigger className="p-4 sticky top-0 left-0 z-10 translate-x-0" />
             {children}
           </main>
         </SidebarProvider>

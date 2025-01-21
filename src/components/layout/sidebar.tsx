@@ -1,13 +1,5 @@
 import { Link } from "@tanstack/react-router"
-import {
-  AlignEndHorizontal,
-  Calendar,
-  Home,
-  Inbox,
-  LogIn,
-  Search,
-  Settings
-} from "lucide-react"
+import { AlignEndHorizontal, Cog, Home, LogIn } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -19,37 +11,21 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar"
+import { useUser } from "@/hooks/use-user"
+import { Role } from "@/types/user"
 
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
+    title: "Личный кабинет",
+    url: "/profile",
     icon: Home
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings
   }
 ]
 
 export function AppSidebar() {
+  const { data: user, isLoading } = useUser()
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -70,19 +46,30 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              {!isLoading && user?.role === Role.Admin ? (
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild>
+                    <Link to="/admin">
+                      <Cog className="mr-2" />
+                      <span>Admin</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ) : null}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className=""></SidebarFooter>
-      <SidebarMenuItem>
-        <SidebarMenuButton className="flex items-center justify-center py-6 border-t-2">
-          <Link to="/" className="flex items-center gap-2">
-            <LogIn />
-            <span className="text-xl">Login</span>
-          </Link>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
+      <SidebarFooter className="">
+        <SidebarMenuItem>
+          <SidebarMenuButton className="flex items-center justify-center py-6 border-t-2">
+            <Link to="/auth/register" className="flex items-center gap-2">
+              <LogIn />
+              <span className="text-xl">Login</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarFooter>
     </Sidebar>
   )
 }

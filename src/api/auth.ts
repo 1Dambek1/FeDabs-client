@@ -1,12 +1,17 @@
-import api from "./api"
+import { type User } from "@/types/user"
+import { api } from "./api"
 
 type Login = {
   email: string
   password: string
 }
 
+type LoginResponse = User & {
+  accessToken: string
+}
+
 export async function login(credentials: Login) {
-  const response = await api.post("/auth/login", credentials)
+  const response = await api.post<LoginResponse>("/auth/login", credentials)
   return response.data
 }
 
@@ -15,6 +20,6 @@ export const logout = () => {
 }
 
 export const fetchCurrentUser = async () => {
-  const response = await api.get("/auth/me")
+  const response = await api.get<User>("/auth/me")
   return response.data
 }
