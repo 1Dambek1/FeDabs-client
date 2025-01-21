@@ -1,6 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Plus } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
@@ -20,7 +21,7 @@ import {
   SelectValue
 } from "@/components/ui/select"
 import { useCreateGroup } from "@/hooks/use-create-group"
-import { GroupsDashboardProps } from "./groups-dashboard"
+import { type Department } from "@/types/user"
 import {
   Form,
   FormControl,
@@ -31,7 +32,15 @@ import {
 } from "./ui/form"
 import { createGroupSchema, type CreateGroupSchema } from "@/lib/schemas"
 
-export function CreateGroupDialog({ departments }: GroupsDashboardProps) {
+type CreateDepartmentDialog = {
+  departments: Department[]
+  small?: boolean
+}
+
+export function CreateGroupDialog({
+  departments,
+  small
+}: CreateDepartmentDialog) {
   const { mutate: createGroup } = useCreateGroup()
 
   const form = useForm<CreateGroupSchema>({
@@ -48,7 +57,13 @@ export function CreateGroupDialog({ departments }: GroupsDashboardProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Создать группу</Button>
+        {!small ? (
+          <Button>Создать группу</Button>
+        ) : (
+          <Button size="icon" variant="ghost">
+            <Plus />
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

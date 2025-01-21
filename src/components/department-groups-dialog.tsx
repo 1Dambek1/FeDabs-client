@@ -10,13 +10,16 @@ import {
 import { useDeleteGroup } from "@/hooks/use-delete-group"
 import { Department } from "@/types/user"
 import { cn } from "@/lib/utils"
+import { CreateGroupDialog } from "./create-group-dialog"
 
 type DepartmentGroupsDialogProps = {
   department: Department
+  departments: Department[]
 }
 
 export const DepartmentGroupsDialog: React.FC<DepartmentGroupsDialogProps> = ({
-  department: dept
+  department: dept,
+  departments
 }) => {
   const { mutate: deleteGroup } = useDeleteGroup()
 
@@ -28,15 +31,16 @@ export const DepartmentGroupsDialog: React.FC<DepartmentGroupsDialogProps> = ({
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Учителя</DialogTitle>
+        <DialogHeader className="flex flex-row justify-start gap-2 items-center">
+          <DialogTitle>Группы</DialogTitle>
+          <CreateGroupDialog departments={departments} small />
         </DialogHeader>
         <ul className="flex flex-col gap-2">
           {dept.groups.length ? (
             dept.groups.map((group, i, arr) => (
               <li
                 key={group.id}
-                className={cn("flex gap-2 py-2 items-center", {
+                className={cn("flex gap-2 py-2 items-center justify-between", {
                   "border-b border-border": i !== arr.length - 1
                 })}
               >

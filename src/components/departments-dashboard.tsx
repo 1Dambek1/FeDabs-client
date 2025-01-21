@@ -87,7 +87,10 @@ export function DepartmentsDashboard({
                       <DepartmentTeachersDialog department={dept} />
                     </TableCell>
                     <TableCell>
-                      <DepartmentGroupsDialog department={dept} />
+                      <DepartmentGroupsDialog
+                        departments={departments}
+                        department={dept}
+                      />
                     </TableCell>
                     <TableCell className="flex justify-end gap-2">
                       <Button size="icon" variant="ghost" asChild>
