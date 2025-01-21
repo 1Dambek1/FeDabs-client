@@ -1,3 +1,5 @@
+import { Link } from "@tanstack/react-router"
+import { ExternalLink, LinkIcon } from "lucide-react"
 import { useState } from "react"
 import { useCreateDepartment } from "@/hooks/use-create-department"
 import type { Department } from "@/types/user"
@@ -5,6 +7,7 @@ import {
   CreateDepartmentDialog,
   CreateDepartmentDialogProps
 } from "./create-department-dialog"
+import { Button } from "./ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Input } from "./ui/input"
 import {
@@ -37,11 +40,11 @@ export function DepartmentsDashboard({
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Departments Admin</h1>
+      <h1 className="text-2xl font-bold mb-4">Панель управления кафедрами</h1>
 
       <Card className="mb-4">
         <CardHeader>
-          <CardTitle>Create New Department</CardTitle>
+          <CardTitle>Создать новую кафедру</CardTitle>
         </CardHeader>
         <CardContent>
           <CreateDepartmentDialog
@@ -53,12 +56,12 @@ export function DepartmentsDashboard({
 
       <Card className="mb-4">
         <CardHeader>
-          <CardTitle>Search Departments</CardTitle>
+          <CardTitle>Искать кафедры</CardTitle>
         </CardHeader>
         <CardContent>
           <Input
             type="text"
-            placeholder="Search departments..."
+            placeholder="Искать кафедры..."
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
@@ -67,17 +70,17 @@ export function DepartmentsDashboard({
 
       <Card>
         <CardHeader>
-          <CardTitle>Departments List</CardTitle>
+          <CardTitle>Все кафедры</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>ID</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Head</TableHead>
-                <TableHead>Teachers</TableHead>
-                <TableHead>Groups</TableHead>
+                <TableHead>Название</TableHead>
+                <TableHead>Заведующий</TableHead>
+                <TableHead>Учителя</TableHead>
+                <TableHead>Группы</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -92,6 +95,18 @@ export function DepartmentsDashboard({
                       .join(", ")}
                   </TableCell>
                   <TableCell>{dept.groups.length}</TableCell>
+                  <TableCell className="flex justify-end">
+                    <Button size="icon" variant="ghost" asChild>
+                      <Link
+                        to={`/admin/departments/$departmentId`}
+                        params={{
+                          departmentId: dept.id.toString()
+                        }}
+                      >
+                        <ExternalLink />
+                      </Link>
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
