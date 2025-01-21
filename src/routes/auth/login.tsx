@@ -35,7 +35,7 @@ export default function LoginForm() {
 
   const { mutate: login, isPending } = useLogin()
 
-  async function onSubmit(data: LoginSchema) {
+  function onSubmit(data: LoginSchema) {
     login(data)
   }
 
