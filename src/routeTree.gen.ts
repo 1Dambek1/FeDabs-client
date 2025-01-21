@@ -11,19 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AdminImport } from './routes/admin'
 import { Route as IndexImport } from './routes/index'
 import { Route as ProfileIndexImport } from './routes/profile/index'
 import { Route as AdminIndexImport } from './routes/admin/index'
 import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as AdminDepartmentsDepartmentIdImport } from './routes/admin/departments/$departmentId'
 
 // Create/Update Routes
-
-const AdminRoute = AdminImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -38,9 +32,9 @@ const ProfileIndexRoute = ProfileIndexImport.update({
 } as any)
 
 const AdminIndexRoute = AdminIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdminRoute,
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const AuthLoginRoute = AuthLoginImport.update({
@@ -48,6 +42,13 @@ const AuthLoginRoute = AuthLoginImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRoute,
 } as any)
+
+const AdminDepartmentsDepartmentIdRoute =
+  AdminDepartmentsDepartmentIdImport.update({
+    id: '/admin/departments/$departmentId',
+    path: '/admin/departments/$departmentId',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -60,13 +61,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminImport
-      parentRoute: typeof rootRoute
-    }
     '/auth/login': {
       id: '/auth/login'
       path: '/auth/login'
@@ -76,10 +70,10 @@ declare module '@tanstack/react-router' {
     }
     '/admin/': {
       id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
+      path: '/admin'
+      fullPath: '/admin'
       preLoaderRoute: typeof AdminIndexImport
-      parentRoute: typeof AdminImport
+      parentRoute: typeof rootRoute
     }
     '/profile/': {
       id: '/profile/'
@@ -88,27 +82,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileIndexImport
       parentRoute: typeof rootRoute
     }
+    '/admin/departments/$departmentId': {
+      id: '/admin/departments/$departmentId'
+      path: '/admin/departments/$departmentId'
+      fullPath: '/admin/departments/$departmentId'
+      preLoaderRoute: typeof AdminDepartmentsDepartmentIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
-interface AdminRouteChildren {
-  AdminIndexRoute: typeof AdminIndexRoute
-}
-
-const AdminRouteChildren: AdminRouteChildren = {
-  AdminIndexRoute: AdminIndexRoute,
-}
-
-const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
-
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
-  '/admin/': typeof AdminIndexRoute
+  '/admin': typeof AdminIndexRoute
   '/profile': typeof ProfileIndexRoute
+  '/admin/departments/$departmentId': typeof AdminDepartmentsDepartmentIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -116,38 +107,57 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/admin': typeof AdminIndexRoute
   '/profile': typeof ProfileIndexRoute
+  '/admin/departments/$departmentId': typeof AdminDepartmentsDepartmentIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/admin/': typeof AdminIndexRoute
   '/profile/': typeof ProfileIndexRoute
+  '/admin/departments/$departmentId': typeof AdminDepartmentsDepartmentIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/auth/login' | '/admin/' | '/profile'
+  fullPaths:
+    | '/'
+    | '/auth/login'
+    | '/admin'
+    | '/profile'
+    | '/admin/departments/$departmentId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/login' | '/admin' | '/profile'
-  id: '__root__' | '/' | '/admin' | '/auth/login' | '/admin/' | '/profile/'
+  to:
+    | '/'
+    | '/auth/login'
+    | '/admin'
+    | '/profile'
+    | '/admin/departments/$departmentId'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth/login'
+    | '/admin/'
+    | '/profile/'
+    | '/admin/departments/$departmentId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRouteWithChildren
   AuthLoginRoute: typeof AuthLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   ProfileIndexRoute: typeof ProfileIndexRoute
+  AdminDepartmentsDepartmentIdRoute: typeof AdminDepartmentsDepartmentIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRouteWithChildren,
   AuthLoginRoute: AuthLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
   ProfileIndexRoute: ProfileIndexRoute,
+  AdminDepartmentsDepartmentIdRoute: AdminDepartmentsDepartmentIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -161,29 +171,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/admin",
         "/auth/login",
-        "/profile/"
+        "/admin/",
+        "/profile/",
+        "/admin/departments/$departmentId"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/admin": {
-      "filePath": "admin.tsx",
-      "children": [
-        "/admin/"
-      ]
-    },
     "/auth/login": {
       "filePath": "auth/login.tsx"
     },
     "/admin/": {
-      "filePath": "admin/index.tsx",
-      "parent": "/admin"
+      "filePath": "admin/index.tsx"
     },
     "/profile/": {
       "filePath": "profile/index.tsx"
+    },
+    "/admin/departments/$departmentId": {
+      "filePath": "admin/departments/$departmentId.tsx"
     }
   }
 }
