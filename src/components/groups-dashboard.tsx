@@ -64,6 +64,7 @@ export function GroupsDashboard({ groups, departments }: GroupsDashboardProps) {
               <TableRow>
                 <TableHead className="w-16">ID</TableHead>
                 <TableHead className="w-80">Название</TableHead>
+                <TableHead className="w-52">Кафедра</TableHead>
                 <TableHead className="w-40 text-center">Ученики</TableHead>
                 <TableHead className="text-right">Действия</TableHead>
               </TableRow>
@@ -74,6 +75,7 @@ export function GroupsDashboard({ groups, departments }: GroupsDashboardProps) {
                   <TableRow key={group.id}>
                     <TableCell>{group.id}</TableCell>
                     <TableCell>{group.title}</TableCell>
+                    <TableCell>{group.department.title}</TableCell>
                     <TableCell>
                       {/* <GroupStudentsDialog group={group} /> */}
                     </TableCell>
