@@ -1,36 +1,36 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { createFileRoute } from "@tanstack/react-router"
-import { Loader2 } from "lucide-react"
-import { motion } from "motion/react"
-import { useForm } from "react-hook-form"
-import { Button } from "@/components/ui/button"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { createFileRoute } from '@tanstack/react-router'
+import { Loader2 } from 'lucide-react'
+import { motion } from 'motion/react'
+import { useForm } from 'react-hook-form'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from "@/components/ui/card"
+  CardTitle,
+} from '@/components/ui/card'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useLogin } from "@/hooks/use-login"
-import { type LoginSchema, loginSchema } from "@/lib/schemas"
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useLogin } from '@/hooks/use-login'
+import { type LoginSchema, loginSchema } from '@/lib/schemas'
 
-export const Route = createFileRoute("/auth/login")({
-  component: LoginForm
+export const Route = createFileRoute('/auth/login')({
+  component: LoginForm,
 })
 
 export default function LoginForm() {
   const form = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema)
+    resolver: zodResolver(loginSchema),
   })
 
   const { mutate: login, isPending } = useLogin()
@@ -100,7 +100,7 @@ export default function LoginForm() {
                         Logging in...
                       </>
                     ) : (
-                      "Log in"
+                      'Log in'
                     )}
                   </Button>
                 </motion.div>

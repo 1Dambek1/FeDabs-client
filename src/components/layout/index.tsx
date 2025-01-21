@@ -10,7 +10,7 @@ const queryClient = new QueryClient()
 export function Layout({ children }: React.PropsWithChildren) {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
+      <ThemeProvider storageKey="vite-ui-theme">
         <SidebarProvider>
           <AppSidebar />
           <main className="relative w-full">

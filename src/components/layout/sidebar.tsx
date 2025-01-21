@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useUser } from "@/hooks/use-user"
 import { Role } from "@/types/user"
+import { ModeToggle } from "../mode-toggle"
 
 // Menu items.
 const items = [
@@ -64,12 +65,15 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="">
-        <SidebarMenuItem>
-          <SidebarMenuButton className="flex items-center justify-center py-6 border-t-2">
-            <Link to="/auth/login" className="flex items-center gap-2">
-              <LogIn />
-              <span className="text-xl">Login</span>
+        <SidebarMenuItem className="flex gap-1">
+          <SidebarMenuButton className="flex items-center justify-center py-6 border hover:bg-border">
+            <Link to="/auth/login" className="flex items-center gap-1">
+              <LogIn size={20} />
+              <span className="text-xl">Вход</span>
             </Link>
+          </SidebarMenuButton>
+          <SidebarMenuButton asChild>
+            <ModeToggle className="aspect-square w-12 h-12 hover:bg-border" />
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarFooter>
