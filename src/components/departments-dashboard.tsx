@@ -67,8 +67,8 @@ export function DepartmentsDashboard({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Название</TableHead>
+                <TableHead className="w-16">ID</TableHead>
+                <TableHead className="w-72">Название</TableHead>
                 <TableHead>Заведующий</TableHead>
                 <TableHead>Учителя</TableHead>
                 <TableHead>Группы</TableHead>
@@ -80,7 +80,7 @@ export function DepartmentsDashboard({
                 filteredDepartments.map(dept => (
                   <TableRow key={dept.id}>
                     <TableCell>{dept.id}</TableCell>
-                    <TableCell>{dept.title}</TableCell>
+                    <TableCell>mmmmmmmmmmmmmmmmmmmm</TableCell>
                     <TableCell>{`${dept.head.name} ${dept.head.surname}`}</TableCell>
                     <TableCell>
                       {dept.teachers

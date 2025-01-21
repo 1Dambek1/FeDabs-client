@@ -12,7 +12,8 @@ type LoginSchema = z.infer<typeof loginSchema>
 const createDepartmentSchema = z.object({
   title: z
     .string()
-    .min(1, { message: "Название кафедры не может быть пустым" }),
+    .min(1, { message: "Название кафедры не может быть пустым" })
+    .max(20, { message: "Название кафедры не может быть больше 20 символов" }),
   headId: z.number().min(1, { message: "Заведующий не может быть пустым" })
 })
 
