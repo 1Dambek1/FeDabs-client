@@ -1,5 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router"
 import { AxiosError } from "axios"
+import { AdminDashboard } from "@/components/admin-dashboard"
 import { Role } from "@/types/user"
 import { fetchCurrentUser } from "@/api/auth"
 
@@ -19,5 +20,5 @@ export const Route = createFileRoute("/admin/")({
 })
 
 function RouteComponent() {
-  return <div>Hello "/aasddmin/"!</div>
+  return <AdminDashboard />
 }
