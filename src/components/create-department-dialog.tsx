@@ -1,6 +1,8 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
+import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -19,11 +21,20 @@ import {
 } from "@/components/ui/select"
 import { useUsers } from "@/hooks/use-users"
 import { type Department, Role, type UserHeadDepartment } from "@/types/user"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "./ui/form"
 import { Skeleton } from "./ui/skeleton"
+import { createDepartmentSchema, CreateDepartmentSchema } from "@/lib/schemas"
 
 export type CreateDepartmentDialogProps = {
   departments: Department[]
-  onCreateDepartment: (title: string, head: UserHeadDepartment) => void
+  onCreateDepartment: (title: string, headId: number) => void
 }
 
 export function CreateDepartmentDialog({
@@ -31,82 +42,88 @@ export function CreateDepartmentDialog({
   onCreateDepartment
 }: CreateDepartmentDialogProps) {
   const { data, isLoading } = useUsers({ role: Role.HeadDepartment })
+  const form = useForm<CreateDepartmentSchema>({
+    resolver: zodResolver(createDepartmentSchema)
+  })
 
   const heads = data?.filter(head => {
     return !departments.some(d => d.head.id === head.id)
   }) as UserHeadDepartment[] | undefined
 
   const [open, setOpen] = useState(false)
-  const [title, setTitle] = useState("")
-  const [selectedHeadId, setSelectedHeadId] = useState<string>("")
 
-  const handleCreate = () => {
-    if (!heads) return
-
-    const selectedHead = heads.find(
-      head => head.id.toString() === selectedHeadId
-    )
-
-    if (title && selectedHead) {
-      onCreateDepartment(title, selectedHead)
-      setOpen(false)
-      setTitle("")
-      setSelectedHeadId("")
-    }
+  const handleCreate = (data: CreateDepartmentSchema) => {
+    onCreateDepartment(data.title, data.headId)
+    setOpen(false)
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Create Department</Button>
+        <Button>Создать кафедру</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create New Department</DialogTitle>
+          <DialogTitle>Создать новую кафедру</DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="title" className="text-right">
-              Title
-            </label>
-            <Input
-              id="title"
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              className="col-span-3"
+        <Form {...form}>
+          <form
+            className="grid gap-2 py-4"
+            onSubmit={form.handleSubmit(handleCreate)}
+          >
+            <FormField
+              name="title"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-4 items-center gap-4">
+                  <FormLabel className="text-left">Название</FormLabel>
+                  <FormControl>
+                    <Input id="title" className="col-span-3" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="head" className="text-right">
-              Head
-            </label>
-            <Select onValueChange={setSelectedHeadId} value={selectedHeadId}>
-              <SelectTrigger className="col-span-3">
-                <SelectValue placeholder="Select a head" />
-              </SelectTrigger>
-              <SelectContent>
-                {isLoading ? (
-                  Array.from({ length: 4 }).map((_, i) => (
-                    <Skeleton className="h-4 w-full" key={i} />
-                  ))
-                ) : heads?.length ? (
-                  heads.map(head => (
-                    <SelectItem key={head.id} value={head.id.toString()}>
-                      {`${head.name} ${head.surname}`}
-                    </SelectItem>
-                  ))
-                ) : (
-                  <p className="text-sm text-center">
-                    Заведующих кафедрами не нашлось.
-                  </p>
-                )}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <Button onClick={handleCreate} disabled={!title || !selectedHeadId}>
-          Create
-        </Button>
+
+            <FormField
+              name="headId"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-4 items-center gap-4">
+                  <FormLabel className="text-right">Заведующий</FormLabel>
+                  <Select
+                    onValueChange={v => field.onChange(parseInt(v))}
+                    defaultValue=""
+                  >
+                    <FormControl>
+                      <SelectTrigger className="col-span-3">
+                        <SelectValue placeholder="Выбрать заведующего" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {isLoading ? (
+                        Array.from({ length: 4 }).map((_, i) => (
+                          <Skeleton className="h-4 w-full" key={i} />
+                        ))
+                      ) : heads?.length ? (
+                        heads.map(head => (
+                          <SelectItem key={head.id} value={head.id.toString()}>
+                            {`${head.name} ${head.surname}`}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <p className="text-sm text-center p-2">
+                          Заведующих кафедрами не нашлось.
+                        </p>
+                      )}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <Button className="mt-4">Create</Button>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

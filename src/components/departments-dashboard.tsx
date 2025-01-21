@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router"
-import { ExternalLink, LinkIcon } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import { useState } from "react"
 import { useCreateDepartment } from "@/hooks/use-create-department"
 import type { Department } from "@/types/user"
@@ -34,8 +34,8 @@ export function DepartmentsDashboard({
   )
 
   const handleCreateDepartment: CreateDepartmentDialogProps["onCreateDepartment"] =
-    (title, head) => {
-      createDepartment({ title, head_id: head.id })
+    (title, headId) => {
+      createDepartment({ title, head_id: headId })
     }
 
   return (
