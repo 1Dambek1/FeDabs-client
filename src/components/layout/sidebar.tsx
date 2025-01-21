@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { AlignEndHorizontal, Cog, Home, LogIn } from "lucide-react"
+import { motion } from "motion/react"
 import {
   Sidebar,
   SidebarContent,
@@ -48,12 +49,14 @@ export function AppSidebar() {
               ))}
               {!isLoading && user?.role === Role.Admin ? (
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Link to="/admin">
-                      <Cog className="mr-2" />
-                      <span>Admin</span>
-                    </Link>
-                  </SidebarMenuButton>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <SidebarMenuButton asChild>
+                      <Link to="/admin">
+                        <Cog />
+                        <span>Admin</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </motion.div>
                 </SidebarMenuItem>
               ) : null}
             </SidebarMenu>
@@ -63,7 +66,7 @@ export function AppSidebar() {
       <SidebarFooter className="">
         <SidebarMenuItem>
           <SidebarMenuButton className="flex items-center justify-center py-6 border-t-2">
-            <Link to="/auth/register" className="flex items-center gap-2">
+            <Link to="/auth/login" className="flex items-center gap-2">
               <LogIn />
               <span className="text-xl">Login</span>
             </Link>
