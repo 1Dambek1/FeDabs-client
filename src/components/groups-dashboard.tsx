@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table"
 import type { Department, Group } from "@/types/user"
 import { CreateGroupDialog } from "./create-group-dialog"
+import { GroupStudentsDialog } from "./group-students-dialog"
 
 export type GroupsDashboardProps = {
   groups: Group[]
@@ -77,7 +78,7 @@ export function GroupsDashboard({ groups, departments }: GroupsDashboardProps) {
                     <TableCell>{group.title}</TableCell>
                     <TableCell>{group.department.title}</TableCell>
                     <TableCell>
-                      {/* <GroupStudentsDialog group={group} /> */}
+                      <GroupStudentsDialog group={group} />
                     </TableCell>
                     <TableCell className="flex justify-end gap-2">
                       <Button size="icon" variant="ghost" asChild>

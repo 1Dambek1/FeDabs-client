@@ -22,3 +22,14 @@ export async function deleteGroup(id: number) {
 
   return response.data
 }
+
+export async function deleteStudentFromGroup(data: {
+  groupId: number
+  studentId: number
+}) {
+  const response = await api.delete(
+    `/admin/groups/delete/group/${data.groupId}/student/${data.studentId}`
+  )
+
+  return response.data
+}
