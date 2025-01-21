@@ -16,16 +16,16 @@ export function useLogin() {
       router.navigate({ to: "/profile" })
 
       toast({
-        title: "Login Successful",
-        description: `Welcome back, ${user.name}!`
+        title: "Вы успешно вошли в систему!",
+        description: `Добро пожаловать, ${user.name}!`
       })
     },
     onError: (error: AxiosError<ApiResponseError>) => {
       toast({
-        title: "Login Failed",
+        title: "Произошла ошибка при входе!",
         description: error?.response
           ? title(error.response.data.detail.data) + "."
-          : "An error occured trying to login"
+          : undefined
       })
     }
   })

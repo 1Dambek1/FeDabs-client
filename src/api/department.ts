@@ -29,3 +29,14 @@ export async function deleteDepartment(id: number) {
 
   return response.data
 }
+
+export async function deleteTeacherFromDepartment(data: {
+  teacherId: number
+  departmentId: number
+}) {
+  const response = await api.delete(
+    `/admin/departments/delete/${data.departmentId}/teacher/${data.teacherId}`
+  )
+
+  return response.data
+}

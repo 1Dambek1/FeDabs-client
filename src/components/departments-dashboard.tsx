@@ -1,13 +1,10 @@
-import { Link, useRouter } from "@tanstack/react-router"
+import { Link } from "@tanstack/react-router"
 import { ExternalLink, Trash } from "lucide-react"
 import { useState } from "react"
-import { useDeleteDepartment } from "@/hooks/use-delete-department"
-import { toast } from "@/hooks/use-toast"
-import type { Department } from "@/types/user"
-import { CreateDepartmentDialog } from "./create-department-dialog"
-import { Button } from "./ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
-import { Input } from "./ui/input"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 import {
   Table,
   TableBody,
@@ -15,7 +12,11 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from "./ui/table"
+} from "@/components/ui/table"
+import { useDeleteDepartment } from "@/hooks/use-delete-department"
+import type { Department } from "@/types/user"
+import { CreateDepartmentDialog } from "./create-department-dialog"
+import { DepartmentTeachersDialog } from "./department-teachers-dialog"
 
 type DepartmentsDashboardProps = {
   departments: Department[]
@@ -24,8 +25,8 @@ type DepartmentsDashboardProps = {
 export function DepartmentsDashboard({
   departments
 }: DepartmentsDashboardProps) {
-  const router = useRouter()
   const { mutate: deleteDepartment } = useDeleteDepartment()
+
   const [searchTerm, setSearchTerm] = useState("")
 
   const filteredDepartments = departments.filter(dept =>
@@ -68,10 +69,10 @@ export function DepartmentsDashboard({
             <TableHeader>
               <TableRow>
                 <TableHead className="w-16">ID</TableHead>
-                <TableHead className="w-72">Название</TableHead>
-                <TableHead>Заведующий</TableHead>
-                <TableHead>Учителя</TableHead>
-                <TableHead>Группы</TableHead>
+                <TableHead className="w-80">Название</TableHead>
+                <TableHead className="w-64">Заведующий</TableHead>
+                <TableHead className="w-40 text-center">Учителя</TableHead>
+                <TableHead className="w-40 text-center">Группы</TableHead>
                 <TableHead className="text-right">Действия</TableHead>
               </TableRow>
             </TableHeader>
@@ -80,14 +81,25 @@ export function DepartmentsDashboard({
                 filteredDepartments.map(dept => (
                   <TableRow key={dept.id}>
                     <TableCell>{dept.id}</TableCell>
-                    <TableCell>mmmmmmmmmmmmmmmmmmmm</TableCell>
+                    <TableCell>{dept.title}</TableCell>
                     <TableCell>{`${dept.head.name} ${dept.head.surname}`}</TableCell>
                     <TableCell>
-                      {dept.teachers
-                        .map(t => `${t.name} ${t.surname}`)
-                        .join(", ")}
+                      <DepartmentTeachersDialog department={dept} />
                     </TableCell>
-                    <TableCell>{dept.groups.length}</TableCell>
+                    <TableCell>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            className="w-full"
+                            size="sm"
+                            variant="secondary"
+                          >
+                            Посмотреть
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent></DialogContent>
+                      </Dialog>
+                    </TableCell>
                     <TableCell className="flex justify-end gap-2">
                       <Button size="icon" variant="ghost" asChild>
                         <Link
@@ -101,13 +113,7 @@ export function DepartmentsDashboard({
                         </Link>
                       </Button>
                       <Button
-                        onClick={() => {
-                          deleteDepartment(dept.id)
-                          router.navigate({ to: "/admin/departments" })
-                          toast({
-                            title: "Кафедра удалена успешно!"
-                          })
-                        }}
+                        onClick={() => deleteDepartment(dept.id)}
                         size="icon"
                         variant="ghost"
                         className="hover:bg-destructive hover:text-destructive-foreground"
